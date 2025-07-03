@@ -1,10 +1,11 @@
+# переключить на "поток захвата"
 import pyaudio
 import wave
 import os
 
-audio = pyaudio.PyAudio() # из библиотеки pyaudio
+audio = pyaudio.PyAudio() 
 
-info = audio.get_host_api_info_by_index(0) # ???
+info = audio.get_host_api_info_by_index(0) 
 numdevices = info.get('deviceCount')  # переменная, в которой сохраняется количество устройств
 
 # declare emty var 
@@ -12,9 +13,9 @@ blackhole_device_index = -1 # ищет тут нужные нам устройс
 microphone_device_index = -1 
 
 if type(numdevices) is int: # дополнительная проверка на то, что устройства есть
-    for i in range(0, numdevices): # проверка с нуля до кол-ва найденный устройств 
+    for i in range(0, numdevices): # проверка с нуля до кол-ва найденных устройств 
         deviceInfo = audio.get_device_info_by_host_api_device_index(0, i) # (0) - индекс Host API, i = индекс конкретного устр-ва
-        name = deviceInfo['name'] # имя устройства 
+        name = deviceInfo['name'] 
         if name == 'BlackHole 2ch':
             blackhole_device_index = i
         if name == 'Микрофон MacBook Pro':
@@ -45,7 +46,7 @@ except KeyboardInterrupt:
     print("Stopping")
     pass
 
-filepath = os.path.join(os.path.dirname(__file__), 'system.wav') # что конкретко означание dirname?
+filepath = os.path.join(os.path.dirname(__file__), 'system.wav')
 sound_file = wave.open(filepath, 'wb')
 sound_file.setnchannels(1)
 sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
