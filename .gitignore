@@ -16,11 +16,8 @@ __pycache__/
 
 # Примеры приватных ключей или конфигураций
 *.env
-config.js.example 
-
-
-
-
+.wav
+.txt
 
 
 
