@@ -4,7 +4,7 @@ import os
 
 audio = pyaudio.PyAudio() # из библиотеки pyaudio
 
-info = audio.get_host_api_info_by_index(0) # ???
+info = audio.get_host_api_info_by_index(0) 
 numdevices = info.get('deviceCount')  # переменная, в которой сохраняется количество устройств
 
 # declare emty var 
@@ -45,7 +45,7 @@ except KeyboardInterrupt:
     print("Stopping")
     pass
 
-filepath = os.path.join(os.path.dirname(__file__), 'system.wav') # что конкретко означание dirname?
+filepath = os.path.join(os.path.dirname(__file__), 'system.wav') 
 sound_file = wave.open(filepath, 'wb')
 sound_file.setnchannels(1)
 sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
