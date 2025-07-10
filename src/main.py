@@ -1,6 +1,6 @@
 # switch to "capture stream"
-from audio_joiner import join_audio
-from translation import translate_audio
+import audio_joiner 
+import ai
 import pyaudio
 import wave
 import os
@@ -48,16 +48,16 @@ try:
 except KeyboardInterrupt:
     pass 
 
-filepath = os.path.join(os.path.dirname(__file__), 'system.wav')
-sound_file = wave.open(filepath, 'wb')
+systemSoundFilePath = os.path.join(os.path.dirname(__file__), '../temp/system.wav')
+sound_file = wave.open(systemSoundFilePath, 'wb')
 sound_file.setnchannels(1)
 sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
 sound_file.setframerate(48000)
 sound_file.writeframes(b''.join(frames))
 sound_file.close()
 
-filepath = os.path.join(os.path.dirname(__file__), 'microphone.wav')
-sound_file2 = wave.open(filepath, 'wb')
+voiceFilePath = os.path.join(os.path.dirname(__file__), '../temp/microphone.wav')
+sound_file2 = wave.open(voiceFilePath, 'wb')
 sound_file2.setnchannels(1)
 sound_file2.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
 sound_file2.setframerate(48000)
@@ -70,5 +70,6 @@ microphone_stream.stop_stream()
 microphone_stream.close()
 audio.terminate()
 
-join_audio("system.wav", "microphone.wav", "final_combined_audio.wav")
-translate_audio()
+joined_audio_file_path = os.path.join(os.path.dirname(__file__), "final_combined_audio.wav")
+audio_joiner.join_audio(systemSoundFilePath, voiceFilePath, joined_audio_file_path)
+ai.translate_audio(joined_audio_file_path)

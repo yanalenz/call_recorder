@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-def join_audio(audio1, audio2, output_filename = "combined_audio.wav"):
+def join_audio(audio1, audio2, output_file_path = "combined_audio.wav"):
     # we need to run ffmpeg and pass this path as an argument
     ffmpeg_path = "/opt/homebrew/bin/ffmpeg"
     # run test command to check if ffmpeg is installed
@@ -23,7 +23,7 @@ def join_audio(audio1, audio2, output_filename = "combined_audio.wav"):
         '-filter_complex', '[0:a][1:a]amix=inputs=2[out]',
         '-map', '[out]',
         '-y', 
-        output_filename
+        output_file_path
     ]
 
     try:
@@ -36,7 +36,7 @@ def join_audio(audio1, audio2, output_filename = "combined_audio.wav"):
         print(result.stdout)
         print("FFmpeg output (stderr):")
         print(result.stderr)
-        print(f"Audiofiles '{audio1}' and '{audio2}' is successfully merged  in '{output_filename}'.")
+        print(f"Audiofiles '{audio1}' and '{audio2}' is successfully merged  in '{output_file_path}'.")
     except subprocess.CalledProcessError as e:
         print(f"Error during FFmpeg execution:")
         print(f"Command: {e.cmd}")
