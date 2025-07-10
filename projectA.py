@@ -1,4 +1,4 @@
-# переключить на "поток захвата"
+# switch to "capture stream"
 import pyaudio
 import wave
 import os
@@ -6,15 +6,15 @@ import os
 audio = pyaudio.PyAudio() 
 
 info = audio.get_host_api_info_by_index(0) 
-numdevices = info.get('deviceCount')  # переменная, в которой сохраняется количество устройств
+numdevices = info.get('deviceCount')  # variable, where the number of devices is saved
 
 # declare emty var 
-blackhole_device_index = -1 # ищет тут нужные нам устройства ,тк пока не нашли их , значение -1
+blackhole_device_index = -1 # looking here for the needed devices, because we haven't found them yet, the value -1
 microphone_device_index = -1 
 
-if type(numdevices) is int: # дополнительная проверка на то, что устройства есть
-    for i in range(0, numdevices): # проверка с нуля до кол-ва найденных устройств 
-        deviceInfo = audio.get_device_info_by_host_api_device_index(0, i) # (0) - индекс Host API, i = индекс конкретного устр-ва
+if type(numdevices) is int: # checking additionally that devices exist
+    for i in range(0, numdevices): # checking found devices
+        deviceInfo = audio.get_device_info_by_host_api_device_index(0, i) # (0) - indecs Host API, i = indecs of the specific device
         name = deviceInfo['name'] 
         if name == 'BlackHole 2ch':
             blackhole_device_index = i
@@ -37,14 +37,16 @@ frames2 = []
 
 try:
     while True:
-        data = system_stream.read(2048, exception_on_overflow=True) # 2048 фреймов (read) 
+        data = system_stream.read(2048, exception_on_overflow=True) # 2048 frames (read) 
         frames.append(data)
 
         data2 = microphone_stream.read(2048, exception_on_overflow=True) 
         frames2.append(data2)
 except KeyboardInterrupt:
-    print("Stopping")
-    pass
+    # stopping = print(input("Do you want to stop the recording? Wrire 'stop' to stop the recording: "))
+    # if stopping is True:
+    #     return stopping
+    pass 
 
 filepath = os.path.join(os.path.dirname(__file__), 'system.wav')
 sound_file = wave.open(filepath, 'wb')
