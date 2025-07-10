@@ -48,4 +48,4 @@ def join_audio(audio1, audio2, output_filename = "combined_audio.wav"):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-join_audio("system.wav", "microphone.wav", "final_combined_audio.wav")
+

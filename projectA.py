@@ -1,4 +1,6 @@
 # switch to "capture stream"
+from audio_joiner import join_audio
+from translation import translate_audio
 import pyaudio
 import wave
 import os
@@ -16,17 +18,18 @@ if type(numdevices) is int: # checking additionally that devices exist
     for i in range(0, numdevices): # checking found devices
         deviceInfo = audio.get_device_info_by_host_api_device_index(0, i) # (0) - indecs Host API, i = indecs of the specific device
         name = deviceInfo['name'] 
+        print(name)
         if name == 'BlackHole 2ch':
             blackhole_device_index = i
-        if name == 'Микрофон MacBook Pro':
+        if name == 'MacBook Pro Microphone':
             microphone_device_index = i
 
 if blackhole_device_index == -1:
-    print("No input device found")
+    print("No blachole device found")
     exit() 
 
 if microphone_device_index == -1:
-    print("No input device found")
+    print("No microphone device found")
     exit()
 
 system_stream = audio.open(format=pyaudio.paInt16, channels=1, rate=48000, input=True, frames_per_buffer=2048, input_device_index=blackhole_device_index)
@@ -43,9 +46,6 @@ try:
         data2 = microphone_stream.read(2048, exception_on_overflow=True) 
         frames2.append(data2)
 except KeyboardInterrupt:
-    # stopping = print(input("Do you want to stop the recording? Wrire 'stop' to stop the recording: "))
-    # if stopping is True:
-    #     return stopping
     pass 
 
 filepath = os.path.join(os.path.dirname(__file__), 'system.wav')
@@ -69,3 +69,6 @@ system_stream.close()
 microphone_stream.stop_stream()
 microphone_stream.close()
 audio.terminate()
+
+join_audio("system.wav", "microphone.wav", "final_combined_audio.wav")
+translate_audio()
