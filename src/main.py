@@ -25,7 +25,7 @@ if type(numdevices) is int: # checking additionally that devices exist
             microphone_device_index = i
 
 if blackhole_device_index == -1:
-    print("No blachole device found")
+    print("No blackhole device found")
     exit() 
 
 if microphone_device_index == -1:
