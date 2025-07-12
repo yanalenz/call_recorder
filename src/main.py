@@ -5,7 +5,7 @@ import pyaudio
 import wave
 import os
 
-from blackhole_init import init_blackhole
+from device_init import init_blackhole, select_microphone
 
 init_blackhole()
 audio = pyaudio.PyAudio() 
@@ -16,15 +16,15 @@ numdevices = info.get('deviceCount')  # variable, where the number of devices is
 # declare emty var 
 blackhole_device_index = -1 # looking here for the needed devices, because we haven't found them yet, the value -1
 microphone_device_index = -1 
+microphone_device_name = select_microphone()
 
 if type(numdevices) is int: # checking additionally that devices exist
     for i in range(0, numdevices): # checking found devices
         deviceInfo = audio.get_device_info_by_host_api_device_index(0, i) # (0) - indecs Host API, i = indecs of the specific device
         name = deviceInfo['name'] 
-        print(name)
         if name == 'BlackHole 2ch':
             blackhole_device_index = i
-        if name == 'MacBook Pro Microphone':
+        if name == microphone_device_name:
             microphone_device_index = i
 
 if blackhole_device_index == -1:
