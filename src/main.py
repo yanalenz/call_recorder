@@ -5,6 +5,9 @@ import pyaudio
 import wave
 import os
 
+from blackhole_init import init_blackhole
+
+init_blackhole()
 audio = pyaudio.PyAudio() 
 
 info = audio.get_host_api_info_by_index(0) 
