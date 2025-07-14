@@ -4,6 +4,8 @@ import ai
 import pyaudio
 import wave
 import os
+import datetime as dt 
+
 
 from device_init import init_blackhole, select_microphone
 
@@ -51,7 +53,8 @@ try:
 except KeyboardInterrupt:
     pass 
 
-systemSoundFilePath = os.path.join(os.path.dirname(__file__), '../temp/system.wav')
+wav_1 = dt.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+systemSoundFilePath = os.path.join(os.path.dirname(__file__), f'../temp/system_{wav_1}.wav')
 sound_file = wave.open(systemSoundFilePath, 'wb')
 sound_file.setnchannels(1)
 sound_file.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
@@ -59,7 +62,8 @@ sound_file.setframerate(48000)
 sound_file.writeframes(b''.join(frames))
 sound_file.close()
 
-voiceFilePath = os.path.join(os.path.dirname(__file__), '../temp/microphone.wav')
+wav_2 = dt.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+voiceFilePath = os.path.join(os.path.dirname(__file__), f'../temp/microphone_{wav_2}.wav')
 sound_file2 = wave.open(voiceFilePath, 'wb')
 sound_file2.setnchannels(1)
 sound_file2.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
@@ -73,6 +77,7 @@ microphone_stream.stop_stream()
 microphone_stream.close()
 audio.terminate()
 
-joined_audio_file_path = os.path.join(os.path.dirname(__file__), "final_combined_audio.wav")
+final_wav = dt.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+joined_audio_file_path = os.path.join(os.path.dirname(__file__), f"{final_wav}.wav")
 audio_joiner.join_audio(systemSoundFilePath, voiceFilePath, joined_audio_file_path)
 ai.translate_audio(joined_audio_file_path)
